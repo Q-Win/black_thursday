@@ -1,36 +1,23 @@
 require_relative 'item'
 require 'time'
+require_relative './repositories'
 
 class ItemRepository
 
-  attr_reader :items
+  include Repositories
+
+  attr_reader :collection
 
   def initialize
-    @collections = []
-  end
-
-  def add_item(item)
-    @items << item
-  end
-
-  def all
-    items
-  end
-
-  def find_by_id(id)
-    items.find {|item| item.id == id}
-  end
-
-  def find_by_name(name)
-    items.find {|item| item.name.downcase == name.downcase}
+    @collection = []
   end
 
   def find_all_with_description(description)
-    items.find_all {|item| item.description.downcase.include? description.downcase }
+    collection.find_all {|item| item.description.downcase.include? description.downcase }
   end
 
   def find_all_by_price(price)
-    items.find_all {|item| item.unit_price_to_dollars == price.to_f}
+    collection.find_all {|item| item.unit_price_to_dollars == price.to_f}
   end
 
   def inspect
@@ -38,18 +25,18 @@ class ItemRepository
   end
 
   def find_all_by_price_in_range(range)
-    items.find_all {|item| range.include?(item.unit_price_to_dollars)}
+    collection.find_all {|item| range.include?(item.unit_price_to_dollars)}
   end
 
   def find_all_by_merchant_id(merchant_id)
-    merchant = items.find_all {|item| item.merchant_id == merchant_id}
+    merchant = collection.find_all {|item| item.merchant_id == merchant_id}
   end
 
   def create(attributes)
-    max_id = (items.max_by{|item| item.id}).id + 1
+    max_id = (collection.max_by{|item| item.id}).id + 1
     attributes[:id] = max_id
     new_item = Item.new(attributes)
-    add_item(new_item)
+    add_object(new_item)
     new_item
   end
 
@@ -70,12 +57,4 @@ class ItemRepository
     end
   end
 
-  def delete(id)
-    if find_by_id(id) == nil
-
-    else
-    index = items.find_index {|i| i.id == id}
-    items.delete_at(index)
-    end
-  end
 end

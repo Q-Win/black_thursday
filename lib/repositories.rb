@@ -8,7 +8,7 @@ module Repositories
     @collection
   end
 
-  def add_merchant(object)
+  def add_object(object)
     @collection << object
   end
 

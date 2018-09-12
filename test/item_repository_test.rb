@@ -26,7 +26,7 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 2
                   })
 
-    assert_equal [], ir.items
+    assert_equal [], ir.collection
   end
 
   def test_we_can_add_items_to_repo
@@ -41,11 +41,11 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 2
                   })
 
-    ir.add_item(i)
+    ir.add_object(i)
 
 
 
-    assert_equal [i], ir.items
+    assert_equal [i], ir.collection
   end
 
   def test_we_can_return_all_items
@@ -69,8 +69,8 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 2
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
+    ir.add_object(i)
+    ir.add_object(i2)
 
     assert_equal [i,i2], ir.all
   end
@@ -96,8 +96,8 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 2
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
+    ir.add_object(i)
+    ir.add_object(i2)
 
     actual = ir.find_by_id(2)
 
@@ -125,8 +125,8 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 2
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
+    ir.add_object(i)
+    ir.add_object(i2)
 
     actual = ir.find_by_name("Pen")
 
@@ -164,9 +164,9 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 1
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
-    ir.add_item(i3)
+    ir.add_object(i)
+    ir.add_object(i2)
+    ir.add_object(i3)
 
     assert_equal [i,i2], ir.find_all_with_description("write")
     assert_equal [i3], ir.find_all_with_description("compute")
@@ -203,9 +203,9 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 1
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
-    ir.add_item(i3)
+    ir.add_object(i)
+    ir.add_object(i2)
+    ir.add_object(i3)
 
     assert_equal [i2,i3], ir.find_all_by_price(88.99)
     assert_equal [i], ir.find_all_by_price(10.99)
@@ -242,9 +242,9 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 1
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
-    ir.add_item(i3)
+    ir.add_object(i)
+    ir.add_object(i2)
+    ir.add_object(i3)
 
     assert_equal [i2,i3], ir.find_all_by_price_in_range(80..90)
     assert_equal [], ir.find_all_by_price_in_range(50..60)
@@ -281,9 +281,9 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 1
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
-    ir.add_item(i3)
+    ir.add_object(i)
+    ir.add_object(i2)
+    ir.add_object(i3)
 
     assert_equal [i,i2], ir.find_all_by_merchant_id(2)
     assert_equal [], ir.find_all_by_merchant_id(3)
@@ -301,7 +301,7 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 2
     })
 
-    ir.add_item(i3)
+    ir.add_object(i3)
     i2 = ir.create({
       :id          => 3,
       :name        => "PC",
@@ -347,9 +347,9 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 1
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
-    ir.add_item(i3)
+    ir.add_object(i)
+    ir.add_object(i2)
+    ir.add_object(i3)
     ir.update(3,{
       :id          => 3,
       :name        => "Laptop",
@@ -394,12 +394,12 @@ class ItemRepositoryTest < Minitest::Test
       :merchant_id => 1
     })
 
-    ir.add_item(i)
-    ir.add_item(i2)
-    ir.add_item(i3)
+    ir.add_object(i)
+    ir.add_object(i2)
+    ir.add_object(i3)
     ir.delete(2)
 
-    assert_equal [i,i3], ir.items
+    assert_equal [i,i3], ir.collection
 
   end
 
