@@ -15,7 +15,7 @@ class MerchantRepositoryTest < Minitest::Test
   def test_it_has_no_merchants_by_default
     mr = MerchantRepository.new
 
-    assert_equal [], mr.merchants
+    assert_equal [], mr.collection
   end
 
   def test_we_can_add_merchants
@@ -23,13 +23,13 @@ class MerchantRepositoryTest < Minitest::Test
     m = Merchant.new({:id => 5, :name => "Turing School"})
     m2 = Merchant.new({:id => 6, :name => "Basement"})
 
-    mr.add_merchant(m)
+    mr.add_object(m)
 
-    assert_equal [m], mr.merchants
+    assert_equal [m], mr.collection
 
-    mr.add_merchant(m2)
+    mr.add_object(m2)
 
-    assert_equal [m,m2], mr.merchants
+    assert_equal [m,m2], mr.collection
 
   end
 
@@ -38,8 +38,8 @@ class MerchantRepositoryTest < Minitest::Test
     m = Merchant.new({:id => 5, :name => "Turing School"})
     m2 = Merchant.new({:id => 6, :name => "Basement"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
+    mr.add_object(m)
+    mr.add_object(m2)
 
     assert_equal [m,m2], mr.all
 
@@ -50,8 +50,8 @@ class MerchantRepositoryTest < Minitest::Test
     m = Merchant.new({:id => 5, :name => "Turing School"})
     m2 = Merchant.new({:id => 6, :name => "Basement"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
+    mr.add_object(m)
+    mr.add_object(m2)
 
     actual = mr.find_by_id(6).name
 
@@ -65,8 +65,8 @@ class MerchantRepositoryTest < Minitest::Test
     m = Merchant.new({:id => 5, :name => "Turing School"})
     m2 = Merchant.new({:id => 6, :name => "Basement"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
+    mr.add_object(m)
+    mr.add_object(m2)
 
     actual = mr.find_by_name("basement").name
 
@@ -81,10 +81,10 @@ class MerchantRepositoryTest < Minitest::Test
     m3 = Merchant.new({:id => 7, :name => "BaseMent"})
     m4 = Merchant.new({:id => 8, :name => "bAsEmEnT"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
-    mr.add_merchant(m3)
-    mr.add_merchant(m4)
+    mr.add_object(m)
+    mr.add_object(m2)
+    mr.add_object(m3)
+    mr.add_object(m4)
 
     actual = mr.find_all_by_name("base")
 
@@ -99,10 +99,10 @@ class MerchantRepositoryTest < Minitest::Test
     m3 = Merchant.new({:id => 7, :name => "BaseMent"})
     m4 = Merchant.new({:id => 8, :name => "bAsEmEnT"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
-    mr.add_merchant(m3)
-    mr.add_merchant(m4)
+    mr.add_object(m)
+    mr.add_object(m2)
+    mr.add_object(m3)
+    mr.add_object(m4)
     m5 = mr.create({:id => 8, :name => "bAsEmEnT"})
 
     actual = m5.id
@@ -115,8 +115,8 @@ class MerchantRepositoryTest < Minitest::Test
     m = Merchant.new({:id => 5, :name => "Turing School"})
     m2 = Merchant.new({:id => 6, :name => "Basement"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
+    mr.add_object(m)
+    mr.add_object(m2)
     mr.update(6, {:id => 6, :name => "Pawn Shop"})
 
     actual = m2.name
@@ -130,17 +130,17 @@ class MerchantRepositoryTest < Minitest::Test
     m3 = Merchant.new({:id => 7, :name => "BaseMent"})
     m4 = Merchant.new({:id => 8, :name => "bAsEmEnT"})
 
-    mr.add_merchant(m)
-    mr.add_merchant(m2)
-    mr.add_merchant(m3)
-    mr.add_merchant(m4)
+    mr.add_object(m)
+    mr.add_object(m2)
+    mr.add_object(m3)
+    mr.add_object(m4)
     mr.delete(6)
 
-    assert_equal [m,m3,m4], mr.merchants
+    assert_equal [m,m3,m4], mr.collection
 
     mr.delete(5)
 
-    assert_equal [m3,m4], mr.merchants
+    assert_equal [m3,m4], mr.collection
   end
 
 
