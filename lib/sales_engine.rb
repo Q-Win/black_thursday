@@ -9,6 +9,7 @@ class SalesEngine
   def initialize
     @merchants = nil
     @items = nil
+    @invoices
   end
 
   def self.from_csv(repos)
@@ -40,5 +41,9 @@ class SalesEngine
       it.add_object(i)
     end
     return it
+  end
+
+  def analyst
+    SalesAnalyst.new(@items, @merchants)
   end
 end
