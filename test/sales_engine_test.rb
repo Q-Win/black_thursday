@@ -36,7 +36,7 @@ class SalesEngineTest < Minitest::Test
       :items     => "./data/items.csv",
       :merchants => "./data/merchants.csv",
     })
-    assert_equal 475, se.merchants.merchants.length
+    assert_equal 475, se.merchants.collection.length
   end
 
   def test_it_can_add_to_merchant_repo
@@ -44,7 +44,7 @@ class SalesEngineTest < Minitest::Test
     mr = se.pull_merchant_repository("./data/merchants.csv")
 
     assert_instance_of MerchantRepository, mr
-    assert_equal 475, mr.merchants.length
+    assert_equal 475, mr.collection.length
   end
 
   def test_instance_of_item_repository_exists
@@ -68,6 +68,6 @@ class SalesEngineTest < Minitest::Test
     it = se.pull_item_repository("./data/items.csv")
 
     assert_instance_of ItemRepository, it
-    assert_equal 1367, it.items.length
+    assert_equal 1367, it.collection.length
   end
 end
