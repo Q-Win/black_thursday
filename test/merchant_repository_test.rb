@@ -15,7 +15,7 @@ class MerchantRepositoryTest < Minitest::Test
   def test_it_has_no_merchants_by_default
     mr = MerchantRepository.new
 
-    assert_equal [], mr.merchants
+    assert_equal [], mr.collection
   end
 
   def test_we_can_add_merchants
@@ -25,11 +25,11 @@ class MerchantRepositoryTest < Minitest::Test
 
     mr.add_merchant(m)
 
-    assert_equal [m], mr.merchants
+    assert_equal [m], mr.collection
 
     mr.add_merchant(m2)
 
-    assert_equal [m,m2], mr.merchants
+    assert_equal [m,m2], mr.collection
 
   end
 
@@ -136,11 +136,11 @@ class MerchantRepositoryTest < Minitest::Test
     mr.add_merchant(m4)
     mr.delete(6)
 
-    assert_equal [m,m3,m4], mr.merchants
+    assert_equal [m,m3,m4], mr.collection
 
     mr.delete(5)
 
-    assert_equal [m3,m4], mr.merchants
+    assert_equal [m3,m4], mr.collection
   end
 
 

@@ -6,7 +6,7 @@ class ItemRepository
   attr_reader :items
 
   def initialize
-    @items = []
+    @collections = []
   end
 
   def add_item(item)
