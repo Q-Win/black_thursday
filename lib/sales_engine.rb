@@ -1,21 +1,25 @@
 require "csv"
 require_relative "merchant_repository"
 require_relative "item_repository"
+require_relative "invoice_repository"
 require 'bigdecimal'
+require 'pry'
 
 class SalesEngine
   attr_accessor :merchants,
-                :items
+                :items,
+                :invoices
   def initialize
     @merchants = nil
     @items = nil
-    @invoices
+    @invoices = nil
   end
 
   def self.from_csv(repos)
     se = SalesEngine.new
     se.merchants = se.pull_merchant_repository(repos[:merchants])
     se.items = se.pull_item_repository(repos[:items])
+    se.invoices = se.pull_invoice_repository(repos[:invoices])
 
    return se
   end
@@ -23,6 +27,7 @@ class SalesEngine
   def pull_merchant_repository(file_path_merchant)
     mr = MerchantRepository.new
     total_merchants = CSV.read(file_path_merchant, headers: true, header_converters: :symbol)
+
     total_merchants.each do |merchant|
       m = Merchant.new({:id => merchant[:id].to_i, :name => merchant[:name]})
       mr.add_object(m)
@@ -41,6 +46,18 @@ class SalesEngine
       it.add_object(i)
     end
     return it
+  end
+
+  def pull_invoice_repository(file_path_item)
+    in_r = InvoiceRepository.new
+    total_invoices = CSV.read(file_path_item, headers: true, header_converters: :symbol)
+    total_invoices.each do |invoice|
+      i = Invoice.new({:id => invoice[:id].to_i, :customer_id => invoice[:customer_id].to_i, :merchant_id => invoice[:merchant_id].to_i,
+                    :status => invoice[:status].to_sym, :created_at => Time.parse(invoice[:created_at]),
+                    :updated_at => Time.parse(invoice[:updated_at])})
+      in_r.add_object(i)
+    end
+    return in_r
   end
 
   def analyst
