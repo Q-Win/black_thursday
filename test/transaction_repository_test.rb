@@ -5,7 +5,7 @@ require_relative '../lib/transaction_repository'
 require 'bigdecimal'
 require 'time'
 
-class TransactionTest < Minitest::Test
+class TransactionRepositoryTest < Minitest::Test
 
   def test_it_exists
     tr = TransactionRepository.new
