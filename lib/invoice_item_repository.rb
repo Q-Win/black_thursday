@@ -1,5 +1,6 @@
 require 'time'
 require_relative './repositories'
+require_relative './invoice_item'
 
 class InvoiceItemRepository
   include Repositories
@@ -27,15 +28,21 @@ class InvoiceItemRepository
   end
 
   def update(id, attributes)
-    invoice_item = find_by_id(id)
+    item = find_by_id(id)
 
     if find_by_id(id) == nil
 
     else
-      invoice_item.updated_at = Time.now
-      invoice_item.quantity = attributes[:quantity]
-      invoice_item.unit_price = BigDecimal.new(attributes[:unit_price],4)
+      attributes.each do |attribute|
+        if (attribute[0] == :id || attribute[0] == :item_id || attribute[0] == :invoice_id || attribute[0] == :created_at)
+
+        else
+          item.send("#{attribute[0]}=",attribute[1])
+        end
+      end
+    item.updated_at = Time.new
     end
+
   end
 
 end
