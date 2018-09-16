@@ -10,7 +10,7 @@ class InvoiceItem
                 :updated_at
 
   def initialize(info)
-    @id           = info[:id]
+    @id           = info[:id].to_i
     @item_id      = info[:item_id]
     @invoice_id   = info[:invoice_id]
     @quantity     = info[:quantity]
