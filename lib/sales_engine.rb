@@ -3,6 +3,7 @@ require_relative "merchant_repository"
 require_relative "item_repository"
 require_relative "invoice_repository"
 require_relative "invoice_item_repository"
+require_relative "transaction_repository"
 require 'bigdecimal'
 require 'pry'
 
@@ -10,12 +11,14 @@ class SalesEngine
   attr_accessor :merchants,
                 :items,
                 :invoices,
-                :invoice_items
+                :invoice_items,
+                :transactions
   def initialize
     @merchants = nil
     @items = nil
     @invoices = nil
     @invoice_items = nil
+    @transactions = nil
   end
 
   def self.from_csv(repos)
@@ -24,6 +27,7 @@ class SalesEngine
     se.items = se.pull_item_repository(repos[:items])
     se.invoices = se.pull_invoice_repository(repos[:invoices])
     se.invoice_items = se.pull_invoice_item_repository(repos[:invoice_items])
+    se.transactions = se.pull_transaction_repository(repos[:transactions])
 
    return se
   end
@@ -77,6 +81,21 @@ class SalesEngine
       in_it_r.add_object(ii)
     end
     return in_it_r
+  end
+
+  def pull_transaction_repository(file_path_item)
+    t_r = TransactionRepository.new
+    total_transactions = CSV.read(file_path_item, headers: true, header_converters: :symbol)
+    total_transactions.each do |transaction|
+      t = Transaction.new({:id => transaction[:id].to_i, :invoice_id => transaction[:invoice_id].to_i,
+                    :credit_card_number => transaction[:credit_card_number].to_i,
+                    :credit_card_expiration_date => transaction[:credit_card_expiration_date].to_i,
+                    :result => transaction[:result],
+                    :created_at => Time.parse(transaction[:created_at]),
+                    :updated_at => Time.parse(transaction[:updated_at])})
+      t_r.add_object(t)
+    end
+    return t_r
   end
 
   def analyst
