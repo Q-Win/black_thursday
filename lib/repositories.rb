@@ -13,7 +13,7 @@ module Repositories
   end
 
   def find_by_id(id)
-    collection.find {|object| object.id == id}
+    @collection.find {|object| object.id == id}
   end
 
   def find_by_name(name)
