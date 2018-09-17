@@ -98,4 +98,11 @@ class SalesAnalyst
     return items.all.find_all{|item|item.unit_price > two_std}
   end
 
+  def average_invoices_per_merchant
+    number_of_invoices = invoices.all.length.to_f
+    number_of_merchants = merchants.all.length
+    average = (number_of_invoices / number_of_merchants).round(2)
+    return average
+  end
+
 end
