@@ -41,7 +41,7 @@ class SalesAnalyst
     items_per_merchant.keys.inject([]) do |loaded_merchants, merchant_id|
       items = items_per_merchant[merchant_id]
       if items > (average_items_per_merchant + average_items_per_merchant_standard_deviation)
-        loaded_merchants << merchant_id.to_s
+        loaded_merchants << merchant_id
       end
       loaded_merchants
     end
@@ -54,14 +54,15 @@ class SalesAnalyst
   end
 
   def average_item_price_for_merchant(merchant_id)
-    total_items_for_merchant = items.all.find_all{|item|item.merchant_id == merchant_id.to_s}
+    total_items_for_merchant = items.all.find_all{|item|item.merchant_id == merchant_id}
     array_of_prices = total_items_for_merchant.map{|item|item.unit_price}
+    # binding.pry
     return average(array_of_prices)
   end
 
   def average_average_price_per_merchant
     sum_of_averages = merchants.all.inject(0) do |sum, merchant|
-      sum + average_item_price_for_merchant(merchant.id.to_s)
+      sum + average_item_price_for_merchant(merchant.id)
     end
     return (sum_of_averages / merchants.all.length).round(2)
   end
