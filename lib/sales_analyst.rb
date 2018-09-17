@@ -131,6 +131,11 @@ class SalesAnalyst
   end
 
   def bottom_merchants_by_invoice_count
+    two_std = average_invoices_per_merchant - (average_invoices_per_merchant_standard_deviation * 2)
+    return merchants.all.find_all{|merchant| invoices_per_merchant[merchant.id]< two_std}
+  end
+
+  def top_days_by_invoice_count
 
   end
 
