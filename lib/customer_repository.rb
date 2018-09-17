@@ -13,11 +13,11 @@ class CustomerRepository
   end
 
   def find_all_by_first_name(first_name)
-    @collection.find_all {|customer| customer.first_name == first_name}
+    @collection.find_all {|customer| customer.first_name.downcase.include? first_name.downcase}
   end
 
   def find_all_by_last_name(last_name)
-      @collection.find_all {|customer| customer.last_name == last_name}
+      @collection.find_all {|customer| customer.last_name.downcase.include? last_name.downcase}
   end
 
   def create(attributes)
@@ -34,10 +34,16 @@ class CustomerRepository
     if find_by_id(id) == nil
 
     else
-      customer.updated_at = Time.now
-      customer.first_name = attributes[:first_name]
-      customer.last_name = attributes[:last_name]
+      attributes.each do |attribute|
+        if (attribute[0] == :id || attribute[0] == :created_at)
+
+        else
+          customer.send("#{attribute[0]}=",attribute[1])
+        end
+      end
+    customer.updated_at = Time.new
     end
+
   end
 
 end
