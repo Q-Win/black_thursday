@@ -9,12 +9,14 @@ require 'bigdecimal'
 require 'pry'
 
 class SalesEngine
+
   attr_accessor :merchants,
                 :items,
                 :invoices,
                 :invoice_items,
                 :transactions,
                 :customers
+  
   def initialize
     @merchants = nil
     @items = nil
@@ -116,6 +118,6 @@ class SalesEngine
   end
 
   def analyst
-    SalesAnalyst.new(@items, @merchants)
+    SalesAnalyst.new(@items, @merchants, @invoice_items, @invoices)
   end
 end
