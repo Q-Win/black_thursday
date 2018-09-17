@@ -1,5 +1,6 @@
 require 'time'
 require_relative './repositories'
+require_relative './customer'
 
 class CustomerRepository
 

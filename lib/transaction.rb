@@ -10,7 +10,7 @@ class Transaction
     @invoice_id                   = info[:invoice_id].to_i
     @credit_card_number           = info[:credit_card_number]
     @credit_card_expiration_date  = info[:credit_card_expiration_date]
-    @result                       = info[:result]
+    @result                       = info[:result].to_sym
     @created_at                   = info[:created_at]
     @updated_at                   = info[:updated_at]
   end
