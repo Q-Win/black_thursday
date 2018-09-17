@@ -4,12 +4,12 @@ require_relative "item_repository"
 require 'bigdecimal'
 
 class SalesEngine
-  attr_accessor :merchants,
-                :items
+  attr_accessor :merchants, :items, :invoice_items, :inovices
   def initialize
     @merchants = nil
     @items = nil
-    @invoices
+    @invoice_items = nil
+    @invoices = nil
   end
 
   def self.from_csv(repos)
@@ -44,6 +44,6 @@ class SalesEngine
   end
 
   def analyst
-    SalesAnalyst.new(@items, @merchants)
+    SalesAnalyst.new(@items, @merchants, @invoice_items, @invoices)
   end
 end
