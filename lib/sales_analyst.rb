@@ -1,3 +1,5 @@
+require 'pry'
+
 class SalesAnalyst
   attr_reader :items, :merchants, :invoice_items, :invoices
 
@@ -25,6 +27,14 @@ class SalesAnalyst
     merchant_ids.inject(Hash.new(0)) do |item_counts, merchant_id|
       item_counts[merchant_id] += 1
       item_counts
+    end
+  end
+
+  def invoices_per_merchant
+    merchant_ids = invoices.all.map{|invoice|invoice.merchant_id}
+    merchant_ids.inject(Hash.new(0)) do |invoice_counts, merchant_id|
+      invoice_counts[merchant_id] += 1
+      invoice_counts
     end
   end
 
@@ -104,5 +114,25 @@ class SalesAnalyst
     average = (number_of_invoices / number_of_merchants).round(2)
     return average
   end
+
+  def average_invoices_per_merchant_standard_deviation
+    mean = average_invoices_per_merchant
+    num_diff_mean = invoices_per_merchant.values.map{|number|number - mean}
+    num_diff_squared = num_diff_mean.map{|number|number ** 2}
+    sum_of_num_diff_squared = num_diff_squared.inject(0){|sum, diff|sum + diff}
+    average_difference = sum_of_num_diff_squared / (merchants.all.length - 1)
+    return Math.sqrt(average_difference).round(2)
+
+  end
+
+  def top_merchants_by_invoice_count
+    two_std = average_invoices_per_merchant + (average_invoices_per_merchant_standard_deviation * 2)
+    return merchants.all.find_all{|merchant| invoices_per_merchant[merchant.id]> two_std}
+  end
+
+  def bottom_merchants_by_invoice_count
+
+  end
+
 
 end
