@@ -1,9 +1,12 @@
 require 'time'
 require_relative './repositories'
 require_relative './transaction'
+require 'pry'
 
 class TransactionRepository
   include Repositories
+
+  attr_reader   :collection
 
   def initialize
     @collection = []
@@ -35,11 +38,16 @@ class TransactionRepository
     if find_by_id(id) == nil
 
     else
-      transaction.updated_at = Time.now
-      transaction.credit_card_number = attributes[:credit_card_number]
-      transaction.credit_card_expiration_date = attributes[:credit_card_expiration_date]
-      transaction.result = attributes[:result]
+      attributes.each do |attribute|
+        if (attribute[0] == :id || attribute[0] == :invoice_id || attribute[0] == :created_at)
+
+        else
+          transaction.send("#{attribute[0]}=",attribute[1])
+        end
+      end
+    transaction.updated_at = Time.new
     end
+
   end
 
 end
