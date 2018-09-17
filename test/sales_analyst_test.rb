@@ -4,6 +4,7 @@ require_relative '../lib/sales_analyst'
 require_relative '../lib/sales_engine'
 require_relative '../lib/item_repository'
 require_relative '../lib/merchant_repository'
+require 'pry'
 
 class SalesAnalystTest < Minitest::Test
   def setup
@@ -11,7 +12,9 @@ class SalesAnalystTest < Minitest::Test
       :items          => "./data/items.csv",
       :merchants      => "./data/merchants.csv",
       :invoices       => "./data/invoices.csv",
-      :invoice_items  => "./data/invoice_items.csv"
+      :invoice_items  => "./data/invoice_items.csv",
+      :transactions   => "./data/transactions.csv",
+      :customers      => "./data/customers.csv"
       })
     @sa = @se.analyst
   end
@@ -37,8 +40,8 @@ class SalesAnalystTest < Minitest::Test
   def test_it_returns_array_of_most_selling_merchant_ids
     assert_instance_of Array, @sa.merchant_id_with_high_item_count
     assert_equal 52, @sa.merchant_id_with_high_item_count.length
-    assert_equal "12334195", @sa.merchant_id_with_high_item_count.first
-    assert_equal "12334522", @sa.merchant_id_with_high_item_count.last
+    assert_equal 12334195, @sa.merchant_id_with_high_item_count.first
+    assert_equal 12334522, @sa.merchant_id_with_high_item_count.last
   end
 
 
@@ -56,6 +59,10 @@ class SalesAnalystTest < Minitest::Test
   def test_it_can_return_average_unit_price_for_another_given_merchant
     expected = BigDecimal.new(16.66, 4)
     assert_equal expected, @sa.average_item_price_for_merchant(12334105)
+  end
+
+  def test_it_returns_average_average_price_per_merchant
+    assert_equal 350.29, @sa.average_average_price_per_merchant.to_f
   end
 
 end
