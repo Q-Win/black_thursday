@@ -16,7 +16,7 @@ class SalesEngine
                 :invoice_items,
                 :transactions,
                 :customers
-  
+
   def initialize
     @merchants = nil
     @items = nil
@@ -55,7 +55,7 @@ class SalesEngine
     total_items = CSV.read(file_path_item, headers: true, header_converters: :symbol)
     total_items.each do |item|
       i = Item.new({:id => item[:id].to_i, :name => item[:name], :description => item[:description],
-                    :unit_price => BigDecimal.new(item[:unit_price].to_f/100,4), :created_at => Time.parse(item[:created_at]),
+                    :unit_price => BigDecimal.new(item[:unit_price].to_f/100,5), :created_at => Time.parse(item[:created_at]),
                     :updated_at => Time.parse(item[:updated_at]), :merchant_id => item[:merchant_id].to_i})
       it.add_object(i)
     end
