@@ -67,14 +67,35 @@ class SalesAnalyst
     return (sum_of_averages / merchants.all.length).round(2)
   end
 
-
-  # def average_item_price_standard_deviation
-  #  array_of_prices = items.all.map{|item|item.unit_price}
-  #  return standard_deviation(array_of_prices)
-  # end
-
   def average(array)
     sum_of_elements = array.inject(0){|sum, element|sum + element}
     return (sum_of_elements / array.length).round(2)
   end
+
+  def average_item_price
+    array_of_prices = items.all.map{|item|item.unit_price}
+    return average(array_of_prices)
+  end
+
+  def average_item_price_standard_deviation
+    array_of_prices = items.all.map{|item|item.unit_price}
+    return standard_deviation(array_of_prices)
+  end
+
+  def standard_deviation(array)
+   mean = average(array)
+   diff_from_mean = array.map{|element|element - mean}
+   diff_squared = diff_from_mean.map{|difference|difference ** 2}
+   sum_of_diff_squared = diff_squared.inject(0){|sum, diff|sum + diff}
+   average_diff = sum_of_diff_squared / (items.all.length - 1)
+   standard_deviation = Math.sqrt(average_diff)
+   standard_deviation_length = standard_deviation.to_i.to_s.length + 2
+   return BigDecimal.new(standard_deviation, standard_deviation_length)
+ end
+
+  def golden_items
+    two_std = average_item_price + (average_item_price_standard_deviation * 2)
+    return items.all.find_all{|item|item.unit_price > two_std}
+  end
+
 end
