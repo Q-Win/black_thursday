@@ -158,8 +158,10 @@ class SalesAnalyst
 
   end
 
+  def invoice_status(status)
+    all_by_status = @invoices.all.find_all {|invoice| invoice.status == status}
 
-
-
+     (((all_by_status.length.to_f)/(@invoices.all.count)) * 100).round(2)
+  end
 
 end

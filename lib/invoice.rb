@@ -9,7 +9,7 @@ class Invoice
     @id = invoice_hash[:id]
     @customer_id = invoice_hash[:customer_id]
     @merchant_id = invoice_hash[:merchant_id]
-    @status = invoice_hash[:status]
+    @status = invoice_hash[:status].to_sym
     @created_at = invoice_hash[:created_at]
     @updated_at = invoice_hash[:updated_at]
   end
