@@ -181,7 +181,13 @@ class SalesAnalyst
   end
 
   def total_revenue_by_date(date)
-
+    invoices = @invoices.all.find_all {|invoice| invoice.created_at == date}
+    invoices.inject(0)  {|sum, invoice| sum +  invoice_total(invoice.id)}
   end
+
+   def top_revenue_earners(x = 20)
+    
+
+   end
 
 end
