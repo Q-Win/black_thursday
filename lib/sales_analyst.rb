@@ -66,7 +66,6 @@ class SalesAnalyst
   def average_item_price_for_merchant(merchant_id)
     total_items_for_merchant = items.all.find_all{|item|item.merchant_id == merchant_id}
     array_of_prices = total_items_for_merchant.map{|item|item.unit_price}
-    # binding.pry
     return average(array_of_prices)
   end
 
@@ -136,8 +135,31 @@ class SalesAnalyst
   end
 
   def top_days_by_invoice_count
+    mean = @invoices.all.count/7
+    weekday_count_hash = @invoices.all.group_by do |invoice|
+      invoice.created_at.strftime("%A")
+    end
+    invoices_by_day = weekday_count_hash.values.map do |invoices|
+      invoices.count
+    end
+
+    day_nums = weekday_count_hash.find_all do |weekday, invoices|
+      invoices.count > mean + average_invoices_per_day_standard_deviation(invoices_by_day)
+    end.to_h.keys
+  end
+
+  def average_invoices_per_day_standard_deviation(invoices_by_day)
+    mean = @invoices.all.count/7
+    num_diff_mean = invoices_by_day.map{|number|number - mean}
+    num_diff_squared = num_diff_mean.map{|number|number ** 2}
+    sum_of_num_diff_squared = num_diff_squared.inject(0){|sum, diff|sum + diff}
+    average_difference = sum_of_num_diff_squared / (invoices_by_day.length - 1)
+    return Math.sqrt(average_difference).round(2)
 
   end
+
+
+
 
 
 end
