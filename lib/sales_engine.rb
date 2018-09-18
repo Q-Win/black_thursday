@@ -34,7 +34,6 @@ class SalesEngine
     se.invoice_items = se.pull_invoice_item_repository(repos[:invoice_items])
     se.transactions = se.pull_transaction_repository(repos[:transactions])
     se.customers = se.pull_customer_repository(repos[:customers])
-
    return se
   end
 
@@ -118,6 +117,6 @@ class SalesEngine
   end
 
   def analyst
-    SalesAnalyst.new(@items, @merchants, @invoice_items, @invoices)
+    SalesAnalyst.new(@items, @merchants, @invoice_items, @invoices, @transactions, @customers)
   end
 end

@@ -1,14 +1,15 @@
 require 'pry'
 
 class SalesAnalyst
-  attr_reader :items, :merchants, :invoice_items, :invoices
+  attr_reader :items, :merchants, :invoice_items, :invoices, :transactions, :customers
 
-  def initialize(items, merchants, invoice_items, invoices)
+  def initialize(items, merchants, invoice_items, invoices, transactions, customers)
     @items = items
     @merchants = merchants
     @invoice_items = invoice_items
     @invoices = invoices
-
+    @transactions = transactions
+    @customers = customers
   end
 
   def inspect
@@ -160,8 +161,16 @@ class SalesAnalyst
 
   def invoice_status(status)
     all_by_status = @invoices.all.find_all {|invoice| invoice.status == status}
-
      (((all_by_status.length.to_f)/(@invoices.all.count)) * 100).round(2)
   end
+
+  def invoice_paid_in_full?(invoice_id)
+   transactions = @transactions.find_all_by_invoice_id(invoice_id)
+   if transactions.length == 0
+     false
+   else
+     transactions.any? { |transaction| transaction.result == :success }
+   end
+ end
 
 end
