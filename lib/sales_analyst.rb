@@ -171,6 +171,17 @@ class SalesAnalyst
    else
      transactions.any? { |transaction| transaction.result == :success }
    end
- end
+  end
+
+  def invoice_total(invoice_id)
+    invoice_item = @invoice_items.find_all_by_invoice_id(invoice_id)
+    invoice_item.inject(0) do |sum, invoice|
+      sum + (invoice.unit_price * invoice.quantity)
+    end
+  end
+
+  def total_revenue_by_date(date)
+
+  end
 
 end
