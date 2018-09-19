@@ -185,9 +185,32 @@ class SalesAnalyst
     invoices.inject(0)  {|sum, invoice| sum +  invoice_total(invoice.id)}
   end
 
-   def top_revenue_earners(x = 20)
-    
-
+  def calculate_merchants_revenue
+    merchant_revenue_array = []
+    @merchants.all.each do |merchant|
+      merchant_hash = {}
+      total_revenue = 0
+      @invoices.all.each do |invoice|
+        if invoice.merchant_id == merchant.id
+            if invoice_paid_in_full?(invoice.id) == true
+            total_revenue += invoice_total(invoice.id).to_f
+          end
+        end
+      end
+     merchant_hash[:id] = merchant.id
+     merchant_hash[:revenue] = total_revenue
+     merchant_revenue_array << merchant_hash
    end
+   merchant_revenue_array
+  end
+
+  def top_revenue_earners(x = 20)
+    merchant_revenue_array = calculate_merchants_revenue
+
+    sorted = merchant_revenue_array.max_by(x) {|hash| hash[:revenue]}
+    sorted_array = sorted.map do |hash|
+      @merchants.find_by_id(hash[:id])
+    end
+  end
 
 end
