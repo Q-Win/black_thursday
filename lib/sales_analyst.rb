@@ -283,7 +283,22 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item_registered_in_month(month)
-
-
+    merchant_hash = {}
+    merchant_array = []
+    @merchants.all.each do |merchant|
+      merchant_hash[merchant.id] = 0
+      @items.all.each do |item|
+        if merchant.id == item.merchant_id
+          binding.pry
+          if item.created_at.strftime('%B') == month
+            merchant_hash[merchant.id] +=1
+          end
+        end
+      end
+      if merchant_hash[merchant.id] == 1
+        merchant_array << merchant
+      end
+    end
+    merchant_array
   end
 end
