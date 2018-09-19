@@ -213,7 +213,6 @@ class SalesAnalyst
 
   def merchants_ranked_by_revenue
     merchant_revenue_array = calculate_merchants_revenue
-
     sorted = merchant_revenue_array.sort_by {|hash| hash[:revenue]}.reverse
     sorted_array = sorted.map do |hash|
       @merchants.find_by_id(hash[:id])
