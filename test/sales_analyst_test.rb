@@ -4,7 +4,6 @@ require_relative '../lib/sales_analyst'
 require_relative '../lib/sales_engine'
 require_relative '../lib/item_repository'
 require_relative '../lib/merchant_repository'
-require 'pry'
 
 class SalesAnalystTest < Minitest::Test
   def setup
@@ -61,8 +60,15 @@ class SalesAnalystTest < Minitest::Test
     assert_equal expected, @sa.average_item_price_for_merchant(12334105)
   end
 
-  def test_it_returns_average_average_price_per_merchant
-    assert_equal 350.29, @sa.average_average_price_per_merchant.to_f
+  def test_it_returns_all_merchants_with_pending_invoices
+    assert_equal 467, @sa.merchants_with_pending_invoices.count
+    assert_instance_of Merchant, @sa.merchants_with_pending_invoices.first
   end
+
+  def test_it_returns_true_if_invoice_is_pending
+    assert @sa.pending_invoice?(9)
+    refute @sa.pending_invoice?(1)
+  end
+
 
 end
