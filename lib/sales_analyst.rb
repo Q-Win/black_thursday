@@ -211,6 +211,14 @@ class SalesAnalyst
    merchant_revenue_array
   end
 
+  def merchants_ranked_by_revenue
+    merchant_revenue_array = calculate_merchants_revenue
+    sorted = merchant_revenue_array.sort_by {|hash| hash[:revenue]}.reverse
+    sorted_array = sorted.map do |hash|
+      @merchants.find_by_id(hash[:id])
+    end
+  end
+
   def top_revenue_earners(x = 20)
     merchant_revenue_array = calculate_merchants_revenue
 
@@ -272,5 +280,10 @@ class SalesAnalyst
     merchants_ids_with_pending_invoices.uniq.map do |merchant_id|
       merchants.find_by_id(merchant_id)
     end
+  end
+
+  def merchants_with_only_one_item_registered_in_month(month)
+
+
   end
 end
