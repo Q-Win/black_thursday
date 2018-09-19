@@ -227,7 +227,20 @@ class SalesAnalyst
   end
 
   def merchants_with_only_one_item
-
-  end 
+    merchant_hash = {}
+    merchant_array = []
+    @merchants.all.each do |merchant|
+      merchant_hash[merchant.id] = 0
+      @items.all.each do |item|
+        if merchant.id == item.merchant_id
+          merchant_hash[merchant.id] +=1
+        end
+      end
+      if merchant_hash[merchant.id] < 2
+        merchant_array << merchant
+      end
+    end
+    merchant_array
+  end
 
 end
