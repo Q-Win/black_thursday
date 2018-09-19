@@ -185,6 +185,13 @@ class SalesAnalyst
     invoices.inject(0)  {|sum, invoice| sum +  invoice_total(invoice.id)}
   end
 
+
+  def all_transactions_for_invoice(invoice_id)
+     transactions.collection.find_all do |transaction|
+       transaction.invoice_id == invoice_id
+    end
+  end
+
   def calculate_merchants_revenue
     merchant_revenue_array = []
     @merchants.all.each do |merchant|
@@ -230,4 +237,27 @@ class SalesAnalyst
 
   end 
 
+  def pending_invoice?(invoice_id)
+    all_transactions_for_invoice(invoice_id).each do |transaction|
+      if transaction.result == :success
+        return false
+      end
+    end
+    return true
+  end
+
+  def merchants_ids_with_pending_invoices
+    invoices.collection.inject([]) do |merchant_id_array, invoice|
+      if pending_invoice?(invoice.id)
+        merchant_id_array << invoice.merchant_id
+      end
+      merchant_id_array
+    end
+  end
+
+  def merchants_with_pending_invoices
+    merchants_ids_with_pending_invoices.uniq.map do |merchant_id|
+      merchants.find_by_id(merchant_id)
+    end
+  end
 end
