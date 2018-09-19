@@ -213,4 +213,17 @@ class SalesAnalyst
     end
   end
 
+  def revenue_by_merchant(merchant_id)
+    total_revenue = 0
+    @invoices.all.each do |invoice|
+      if invoice.merchant_id == merchant_id
+        if invoice_paid_in_full?(invoice.id) == true
+          total_revenue += invoice_total(invoice.id).to_f
+        end
+      end
+    end
+
+    BigDecimal.new(total_revenue,5)
+  end
+
 end
