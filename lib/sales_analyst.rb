@@ -289,8 +289,8 @@ class SalesAnalyst
       merchant_hash[merchant.id] = 0
       @items.all.each do |item|
         if merchant.id == item.merchant_id
-          binding.pry
-          if item.created_at.strftime('%B') == month
+
+          if merchant.created_at.strftime('%B') == month
             merchant_hash[merchant.id] +=1
           end
         end
@@ -301,4 +301,59 @@ class SalesAnalyst
     end
     merchant_array
   end
+
+  def most_sold_item_for_merchant(merchant_id)
+    merchant_invoice_items = all_paid_invoice_items_for_merchant(merchant_id)
+
+    item_quantity_hash = {}
+
+    merchant_invoice_items.each do |invoice_item|
+      item_quantity_hash[invoice_item.item_id] = invoice_item.quantity
+    end
+
+    sorted_by_quantity_sold = item_quantity_hash.sort_by {|item, quantity| -quantity }
+
+    max_quantity = sorted_by_quantity_sold[0][1]
+
+    most_sold_items = sorted_by_quantity_sold.find_all {|item| item[1] == max_quantity}
+
+    items_to_return = most_sold_items.map do |item|
+      @items.find_by_id(item[0])
+    end
+  end
+
+  def best_item_for_merchant(merchant_id)
+    merchant_invoice_items = all_paid_invoice_items_for_merchant(merchant_id)
+
+    highest_rev_item_invoice = merchant_invoice_items.max_by {|invoice_item| invoice_item.quantity * invoice_item.unit_price}
+
+    highest_rev_item = @items.find_by_id(highest_rev_item_invoice.item_id)
+  end
+
+  def all_items_for_merchant(merchant_id)
+    item_array = []
+    @items.all.each do |item|
+      if item.merchant_id == merchant_id
+        item_array << item
+      end
+    end
+    item_array
+  end
+
+  def all_paid_invoices
+    @invoices.all.find_all {|invoice| invoice_paid_in_full?(invoice.id)}
+  end
+
+  def all_paid_invoice_items_for_merchant(merchant_id)
+    paid_invoices_for_merchant = all_paid_invoices.find_all {|invoice| invoice.merchant_id == merchant_id }
+    paid_invoice_item_array = []
+
+    paid_invoices_for_merchant.each do |invoice|
+      paid_invoice_item_array << @invoice_items.find_all_by_invoice_id(invoice.id)
+    end
+  paid_invoice_item_array.flatten
+
+  end
+
+
 end
