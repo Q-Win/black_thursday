@@ -42,7 +42,9 @@ class SalesEngine
     total_merchants = CSV.read(file_path_merchant, headers: true, header_converters: :symbol)
 
     total_merchants.each do |merchant|
-      m = Merchant.new({:id => merchant[:id].to_i, :name => merchant[:name]})
+      m = Merchant.new({:id => merchant[:id].to_i, :name => merchant[:name],
+                        :created_at => Time.parse(merchant[:created_at]),
+                        :updated_at => Time.parse(merchant[:updated_at])})
       mr.add_object(m)
     end
     mr
